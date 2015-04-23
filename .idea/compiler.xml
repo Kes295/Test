@@ -26,5 +26,8 @@
         <module name="IdeaProjects" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="IdeaProjects" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>
