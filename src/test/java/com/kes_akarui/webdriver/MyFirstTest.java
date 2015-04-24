@@ -25,142 +25,149 @@ public class MyFirstTest {
     By password = By.id("mailbox__password");
     By authButton = By.id("mailbox__auth__button");
     By remind = By.linkText("Напомнить пароль");
-    By login2 = By.name("Login");
-    By name2 = By.name("Domain");
+    By domain2 = By.cssSelector("option[value=\"mail.ua\"]");
     By notExists = By.cssSelector("div.form__row__header__message.js-error");
+    By formLogin = By.id("loginFormEmail");
+    By loginExternal = By.xpath("//form[@id='LoginExternal']/div/div[3]");
+    By submit = By.xpath("(//button[@type='submit'])[2]");
+    String text = "Неверное имя пользователя или пароль. Проверьте правильность введенных данных.";
+    String text2 = "Напомнить пароль";
+    String text3 = "Указанный ящик не существует";
 
 
-        private WebDriver driver;
-        private String baseUrl;
-        private boolean acceptNextAlert = true;
-        private StringBuffer verificationErrors = new StringBuffer();
+    private WebDriver driver;
+    private String baseUrl;
+    private boolean acceptNextAlert = true;
+    private StringBuffer verificationErrors = new StringBuffer();
 
-        @Before
-        public void setUp() throws Exception {
-            driver = new FirefoxDriver();
-            baseUrl = "https://mail.ru/";
-            driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-            Actions actions = new Actions(driver);
+    @Before
+    public void setUp() throws Exception {
+        driver = new FirefoxDriver();
+        baseUrl = "https://mail.ru/";
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        Actions actions = new Actions(driver);
+    }
+
+    @Test
+    public void MyFirstTest() throws Exception {
+        driver.get(baseUrl + "/");
+        try {
+            assertTrue(isElementPresent(login));
+        } catch (Error e) {
+            verificationErrors.append(e.toString());
         }
 
-        @Test
-        public void MyFirstTest() throws Exception {
-            driver.get(baseUrl + "/");
-            try {
-                assertTrue(isElementPresent(By.id("mailbox__login")));
-            } catch (Error e) {
-                verificationErrors.append(e.toString());
-            }
+        driver.findElement(login).clear();
+        driver.findElement(login).sendKeys("kes_akarui");
 
-            driver.findElement(login).clear();
-            driver.findElement(login).sendKeys("kes_akarui");
-
-            try {
-                assertTrue(isElementPresent(domain));
-            } catch (Error e) {
-                verificationErrors.append(e.toString());
-            }
-
-            new Select(driver.findElement(By.id("mailbox__login__domain"))).selectByVisibleText("@mail.ua");
-
-            driver.findElement(By.cssSelector("option[value=\"mail.ua\"]")).click();
-
-            try {
-                assertTrue(isElementPresent(By.id("mailbox__password")));
-            } catch (Error e) {
-                verificationErrors.append(e.toString());
-            }
-
-            driver.findElement(By.id("mailbox__password")).clear();
-            driver.findElement(By.id("mailbox__password")).sendKeys("cvbmn");
-
-            try {
-                assertTrue(isElementPresent(By.id("mailbox__auth__button")));
-            } catch (Error e) {
-                verificationErrors.append(e.toString());
-            }
-
-            driver.findElement(By.id("mailbox__auth__button")).click();
-
-            for (int second = 0;; second++) {
-                if (second >= 60) fail("timeout");
-                try { if ("Неверное имя пользователя или пароль. Проверьте правильность введенных данных.".equals(driver.findElement(By.xpath("//form[@id='LoginExternal']/div/div[3]")).getText())) break; } catch (Exception e) {}
-                Thread.sleep(1000);
-            }
-
-
-            try {
-                assertEquals("Напомнить пароль", driver.findElement(By.linkText("Напомнить пароль")).getText());
-            } catch (Error e) {
-                verificationErrors.append(e.toString());
-            }
-
-            driver.findElement(By.linkText("Напомнить пароль")).click();
-
-            try {
-                assertTrue(isElementPresent(By.id("loginFormEmail")));
-            } catch (Error e) {
-                verificationErrors.append(e.toString());
-            }
-            driver.findElement(By.id("loginFormEmail")).clear();
-            driver.findElement(By.id("loginFormEmail")).sendKeys("kes_akarui");
-            try {
-                assertTrue(isElementPresent(By.name("Domain")));
-            } catch (Error e) {
-                verificationErrors.append(e.toString());
-            }
-            new Select(driver.findElement(By.name("Domain"))).selectByVisibleText("@mail.ua");
-            try {
-                assertTrue(isElementPresent(By.xpath("(//button[@type='submit'])[2]")));
-            } catch (Error e) {
-                verificationErrors.append(e.toString());
-            }
-            driver.findElement(By.xpath("(//button[@type='submit'])[2]")).click();
-            assertEquals("Указанный ящик не существует", driver.findElement(By.cssSelector("div.form__row__header__message.js-error")).getText());
+        try {
+            assertTrue(isElementPresent(domain));
+        } catch (Error e) {
+            verificationErrors.append(e.toString());
         }
 
-        @After
-        public void tearDown() throws Exception {
-            driver.quit();
-            String verificationErrorString = verificationErrors.toString();
-            if (!"".equals(verificationErrorString)) {
-                fail(verificationErrorString);
-            }
+        new Select(driver.findElement(domain)).selectByVisibleText("@mail.ua");
+
+        driver.findElement(domain2).click();
+
+        try {
+            assertTrue(isElementPresent(password));
+        } catch (Error e) {
+            verificationErrors.append(e.toString());
         }
 
-        private boolean isElementPresent(By by) {
+        driver.findElement(password).clear();
+        driver.findElement(password).sendKeys("cvbmn");
+
+        try {
+            assertTrue(isElementPresent(authButton));
+        } catch (Error e) {
+            verificationErrors.append(e.toString());
+        }
+
+        driver.findElement(authButton).click();
+
+        for (int second = 0;; second++) {
+            if (second >= 60) fail("timeout");
             try {
-                driver.findElement(by);
-                return true;
-            } catch (NoSuchElementException e) {
-                return false;
-            }
+                if (text.equals(driver.findElement(loginExternal).getText()))
+                    break; } catch (Exception e) {}
+            Thread.sleep(1000);
         }
 
-        private boolean isAlertPresent() {
-            try {
-                driver.switchTo().alert();
-                return true;
-            } catch (NoAlertPresentException e) {
-                return false;
-            }
+
+        try {
+            assertEquals(text2, driver.findElement(remind).getText());
+        } catch (Error e) {
+            verificationErrors.append(e.toString());
         }
 
-        private String closeAlertAndGetItsText() {
-            try {
-                Alert alert = driver.switchTo().alert();
-                String alertText = alert.getText();
-                if (acceptNextAlert) {
-                    alert.accept();
-                } else {
-                    alert.dismiss();
-                }
-                return alertText;
-            } finally {
-                acceptNextAlert = true;
-            }
-        }
+        driver.findElement(remind).click();
 
- }
+        try {
+            assertTrue(isElementPresent(formLogin));
+        } catch (Error e) {
+            verificationErrors.append(e.toString());
+        }
+        driver.findElement(formLogin).clear();
+        driver.findElement(formLogin).sendKeys("kes_akarui");
+        try {
+            assertTrue(isElementPresent(domain));
+        } catch (Error e) {
+            verificationErrors.append(e.toString());
+        }
+        new Select(driver.findElement(domain)).selectByVisibleText("@mail.ua");
+        try {
+            assertTrue(isElementPresent(submit));
+        } catch (Error e) {
+            verificationErrors.append(e.toString());
+        }
+        driver.findElement(submit).click();
+        assertEquals(text3, driver.findElement(notExists).getText());
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        driver.quit();
+        String verificationErrorString = verificationErrors.toString();
+        if (!"".equals(verificationErrorString)) {
+            fail(verificationErrorString);
+        }
+    }
+
+    private boolean isElementPresent(By by) {
+        try {
+            driver.findElement(by);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    private boolean isAlertPresent() {
+        try {
+            driver.switchTo().alert();
+            return true;
+        } catch (NoAlertPresentException e) {
+            return false;
+        }
+    }
+
+    private String closeAlertAndGetItsText() {
+        try {
+            Alert alert = driver.switchTo().alert();
+            String alertText = alert.getText();
+            if (acceptNextAlert) {
+                alert.accept();
+            } else {
+                alert.dismiss();
+            }
+            return alertText;
+        } finally {
+            acceptNextAlert = true;
+        }
+    }
+
+}
 
 
