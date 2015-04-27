@@ -1,30 +1,22 @@
 package com.kes_akarui.webdriver;
 
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 import static org.testng.Assert.assertEquals;
 
-
+/**
+ * Created by oskrynnik on 4/20/2015.
+ */
 public class MyFirstTest extends ConfigurationManager{
-
-    @Test
-    public void testUntitled() throws Exception {
-        driver.get(baseUrl + "/");
-        driver.findElement(Locators.LOGIN).clear();
-        driver.findElement(Locators.LOGIN).sendKeys("kes_akarui295");
-        driver.findElement(Locators.PASSWORD).clear();
-        driver.findElement(Locators.PASSWORD).sendKeys("Apotheosis295");
-        driver.findElement(Locators.AUTH_BUTTON).click();
-        assertEquals(driver.getTitle(), "dfgg");
-    }
+    LoginPage loginPage;
 
     public void testUntitled2() throws Exception {
-        driver.get("/");
-        driver.findElement(Locators.LOGIN).clear();
-        driver.findElement(Locators.LOGIN).sendKeys("dfgsdfg");
-        driver.findElement(Locators.PASSWORD).clear();
-        driver.findElement(Locators.PASSWORD).sendKeys("sdfgsdfg");
-        driver.findElement(Locators.AUTH_BUTTON).click();
+        Data data = new Data();
+        LoginPage loginPage = new LoginPage();
+
+        loginPage.fillInLogiField(data.getLogin()).fillInPasswordField(data.getPassword()).clickAuth();
+        assertEquals(loginPage.getPageTitle(), data.getPageTile());
     }
 }
 
