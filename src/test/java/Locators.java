@@ -1,4 +1,3 @@
-package com.kes_akarui.webdriver;
 import  org.openqa.selenium.By;
 /**
  * Created by Mandrake on 26.04.2015.

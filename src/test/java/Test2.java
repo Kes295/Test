@@ -1,12 +1,11 @@
-package com.kes_akarui.webdriver;
-
 import org.junit.Test;
+
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by oskrynnik on 4/20/2015.
  */
-public class MyFirstTest extends ConfigurationManager{
+public class Test2 extends ConfigurationManager {
     @Test
     public void testUntitled2() throws Exception {
         //preparation

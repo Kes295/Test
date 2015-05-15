@@ -1,5 +1,3 @@
-package com.kes_akarui.webdriver;
-
 /**
  * Created by Mandrake on 27.04.2015.
  */

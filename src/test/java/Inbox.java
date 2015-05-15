@@ -1,4 +1,3 @@
-package com.kes_akarui.webdriver;
 import org.openqa.selenium.WebElement;
 
 /**

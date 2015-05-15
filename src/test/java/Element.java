@@ -1,5 +1,3 @@
-package com.kes_akarui.webdriver;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
