@@ -13,5 +13,4 @@ public class TextInput extends Element {
     public void sendKeys(String value) {
         element().clear();
         element().sendKeys(value);
-    }
-}
+    }}

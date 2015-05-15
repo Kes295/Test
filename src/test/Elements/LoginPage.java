@@ -1,7 +1,5 @@
 package com.kes_akarui.webdriver;
 
-import sun.rmi.runtime.Log;
-
 /**
  * Created by Mandrake on 27.04.2015.
  */
